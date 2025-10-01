@@ -1,0 +1,93 @@
+---
+title: "Map Prep"
+output: 
+  html_document:
+    df_print: paged
+---
+
+```{r link}
+rm(list = ls())
+
+europe_link="https://raw.githubusercontent.com/madisonhess/Homework_1/main/europe_8857.gpkg"
+library(sf)
+st_layers(europe_link)
+```
+```{r layers}
+europe <- st_read(europe_link, layer = "continent")
+europe_mobiles_ddm <- st_read(europe_link, layer = "mobiles_ddm")
+europe_mobiles_psm <- st_read(europe_link, layer = "mobiles_psm")
+```
+```{r crs}
+st_crs(europe)$epsg
+```
+
+```{r base}
+library(ggplot2)
+library(scales)
+
+ggplot() + theme_light() +
+  #call map
+  geom_sf(data = europe) + 
+  # adjust datum 
+  coord_sf(datum = st_crs(europe)) + 
+  # custom X and Y axes
+  scale_x_continuous(labels = label_number(scale = 1/1000, suffix = " km")) +
+  scale_y_continuous(labels = label_number(scale = 1/1000, suffix = " km")) +
+  labs(x = "Easting", y = "Northing") #labels
+```
+# DDM - interactive
+```{r ddm}
+library(leaflet)
+# needs geographic CRS
+ddm_4326 <- st_transform(europe_mobiles_ddm, crs = 4326)
+
+
+ddm_plot=leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron)  %>%  # names in english
+  addCircleMarkers(data = ddm_4326,
+                   color="red",
+                   stroke=0,
+                   radius = 0.01,
+                   opacity = 0.1)
+
+ddm_plot
+```
+
+# PSM - interactive
+
+```{r psm}
+# CRS for leaflet
+psm_4326 <- st_transform(europe_mobiles_psm, crs = 4326)
+
+
+psm_plot=leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron)  %>%  
+  addCircleMarkers(data = psm_4326,
+                   label = ~Country,
+                   radius = ~size)
+
+psm_plot
+```
+
+# CHLORO - static
+
+```{r}
+chloro_plot=ggplot() + theme_light() +
+  #base
+  geom_sf(data=europe,
+          aes(fill=mobiles_density_FJ5_cat))+
+  coord_sf(datum = st_crs(europe)) +
+  scale_fill_brewer(direction = 1,palette = 'RdBu') + 
+  scale_x_continuous(labels = label_number(scale = 1/1000, suffix = " km")) +
+  scale_y_continuous(labels = label_number(scale = 1/1000, suffix = " km")) +
+  labs(x = "Easting", y = "Northing",fill="Mobile Subscriber Density")
+
+chloro_plot
+```
+
+
+```{r save}
+saveRDS(chloro_plot,file = "chloropleth.rds")
+saveRDS(ddm_plot,file = "ddm.rds")
+saveRDS(psm_plot,file = "psm.rds")
+```

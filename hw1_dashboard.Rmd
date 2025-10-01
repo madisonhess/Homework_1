@@ -1,0 +1,36 @@
+---
+title: "Mobile Telephone Subcribers - MAPS"
+output:
+  flexdashboard::flex_dashboard:
+    navbar:
+    -  { icon: "fa-github", href: https://github.com/madisonhess/Homework_1, align: right }
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+## Sidebar {.sidebar}
+
+
+## Column {.tabset .tabset-fade}
+
+
+### DDM
+
+```{r}
+readRDS("/Users/maddiehess/Downloads/chloropleth.rds")
+```
+
+
+### DDM
+
+```{r}
+readRDS("/Users/maddiehess/Downloads/ddm.rds")
+```
+
+### PSM
+
+```{r}
+readRDS("/Users/maddiehess/Downloads/psm.rds")
+```
