@@ -15,22 +15,25 @@ library(flexdashboard)
 
 ## Column {.tabset .tabset-fade}
 
+### Link to Repo
 
-### DDM
+https://github.com/madisonhess/Homework_1
+
+### Choropleth
 
 ```{r}
-readRDS("/Users/maddiehess/Downloads/chloropleth.rds")
+readRDS("choropleth.rds")
 ```
 
 
 ### DDM
 
 ```{r}
-readRDS("/Users/maddiehess/Downloads/ddm.rds")
+readRDS("ddm.rds")
 ```
 
 ### PSM
 
 ```{r}
-readRDS("/Users/maddiehess/Downloads/psm.rds")
+readRDS("psm.rds")
 ```

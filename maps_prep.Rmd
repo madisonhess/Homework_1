@@ -72,7 +72,7 @@ psm_plot
 # CHLORO - static
 
 ```{r}
-chloro_plot=ggplot() + theme_light() +
+choro_plot=ggplot() + theme_light() +
   #base
   geom_sf(data=europe,
           aes(fill=mobiles_density_FJ5_cat))+
@@ -82,12 +82,12 @@ chloro_plot=ggplot() + theme_light() +
   scale_y_continuous(labels = label_number(scale = 1/1000, suffix = " km")) +
   labs(x = "Easting", y = "Northing",fill="Mobile Subscriber Density")
 
-chloro_plot
+choro_plot
 ```
 
 
 ```{r save}
-saveRDS(chloro_plot,file = "chloropleth.rds")
+saveRDS(choro_plot,file = "choropleth.rds")
 saveRDS(ddm_plot,file = "ddm.rds")
 saveRDS(psm_plot,file = "psm.rds")
 ```
